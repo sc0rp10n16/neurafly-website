@@ -1,32 +1,29 @@
 import React, { useEffect, useRef } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
-import { GLTFLoader } from 'three/examples/jsm/Addons.js';
-import { useAnimations } from '@react-three/drei';
+import { useGLTF, useAnimations } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import { Group } from 'three';
 
-const GLTFModel = ({ url, position = [0, 0, 0], rotation = [0, 0, 0], scale = [1,1,1] }) => {
-  const gltf = useLoader(GLTFLoader, url);
-  const { animations } = gltf;
-  const { actions, names } = useAnimations(animations, gltf.scene);
-  const gltfRef = useRef();
+const Model = () => {
+  const { scene, animations } = useGLTF('/drone.glb');
+  const { actions, names } = useAnimations(animations, scene);
+  const modelRef = useRef<Group>();
 
   useEffect(() => {
-    if (actions && names.length > 0) {
-      actions[names[1]].play(); // Play the first animation by default
-    }
+    const action = actions[names[1]];
+    action?.play()
+    
+    return () => {
+      action?.stop();
+    };
   }, [actions, names]);
 
   useFrame((state, delta) => {
-    if (gltfRef.current) {
-      gltfRef.current.rotation.y += delta * 1; // Adjust the speed as needed
+    if (modelRef.current) {
+      modelRef.current.rotation.y += delta * 1; // Adjust the speed as needed
     }
   });
-  return <primitive
-    ref = {gltfRef}
-    object={gltf.scene} 
-    position={position} 
-    rotation={rotation}
-    scale={scale}
-    />;
+
+  return <primitive ref={modelRef} object={scene} scale={1} position={[0, -2, -5]} />;
 };
 
-export default GLTFModel;
+export default Model;

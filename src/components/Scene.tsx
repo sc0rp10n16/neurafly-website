@@ -17,11 +17,7 @@ export default function Scene() {
              maxDistance={5} // Maximum zoom distance
         />
         <GLTFModel 
-            url="/drone.glb" 
-            position={[0, -2, -5]} 
-            rotation={[0, 0, 0]}
-            scale={[1,1,1]}
-
+            
             />
       </Canvas>
     </div>
