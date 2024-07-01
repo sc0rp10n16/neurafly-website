@@ -108,16 +108,16 @@ export default function Home() {
           >
             {" "}
             <span
-              className={cn("transition-colors duration-200", {
-                "text-purple-300": currentFramework === "qwik",
-                "text-sky-300": currentFramework === "safari",
-                "text-yellow-300": currentFramework === "chrome",
-                "text-teal-300": currentFramework === "tailwind",
-                "text-blue-300": currentFramework === "react",
-                "text-green-300": currentFramework === "vue",
-                "text-orange-400": currentFramework === "svelte",
-                "text-red-300": currentFramework === "mobile",
-                "text-neutral-300": currentFramework === "desktop",
+              className={cn("transition-colors text-blue-300 duration-200", {
+                // "text-purple-300": currentFramework === "qwik",
+                // "text-sky-300": currentFramework === "safari",
+                // "text-yellow-300": currentFramework === "chrome",
+                // "text-teal-300": currentFramework === "tailwind",
+                // "text-blue-300": currentFramework === "react",
+                // "text-green-300": currentFramework === "vue",
+                // "text-orange-400": currentFramework === "svelte",
+                // "text-red-300": currentFramework === "mobile",
+                // "text-neutral-300": currentFramework === "desktop",
               })}
             >
               Neurafly
