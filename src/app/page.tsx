@@ -1,112 +1,225 @@
+"use client";
+import { assets } from "@/utils/asset-utils";
+import { Poppins } from "next/font/google";
 import Image from "next/image";
+import { frameworks, type Framework } from "@/utils/framework-utils";
+import { useState, useEffect, Suspense } from "react";
+import { cn } from "@/utils/tailwind-utils";
+import animationData from "@/components/voiceAi.json";
+import Lottie from "lottie-react";
+import { useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { Instagram, LinkedinIcon } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Link from "next/link";
+import { FaXTwitter } from "react-icons/fa6";
+import { Canvas } from "react-three-fiber";
+import { OrbitControls } from "@react-three/drei";
+import dynamic from "next/dynamic";
+
+
+const Scene = dynamic(()=> import("@/components/Scene"), {ssr:false});
+
+const poppins = Poppins({
+  weight: "700",
+  subsets: ["latin"],
+});
 
 export default function Home() {
+  const [docEnv, setDocEnv] = useState(false);
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      setDocEnv(true);
+    }
+  }, []);
+  const createWaitlist = useMutation(api.waitlists.createWaitlist);
+
+  const [currentFramework, setCurrentFramework] = useState<Framework>(
+    frameworks[0],
+  );
+
+  const [showBackground, setShowBackground] = useState(false);
+
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const rotateFrameworks = () => {
+      setCurrentFramework(frameworks[currentIndex]);
+      currentIndex = (currentIndex + 1) % frameworks.length;
+    };
+    const intervalId = setInterval(rotateFrameworks, 2000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    setShowBackground(true);
+  }, []);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+      <div
+        className={cn(
+          "fixed inset-0 transition-colors delay-100 duration-700 opacity-25",
+          {
+            "bg-purple-300": currentFramework === "qwik",
+            "bg-sky-300": currentFramework === "safari",
+            "bg-yellow-300": currentFramework === "chrome",
+            "bg-teal-300": currentFramework === "tailwind",
+            "bg-blue-300": currentFramework === "react",
+            "bg-green-300": currentFramework === "vue",
+            "bg-orange-400": currentFramework === "svelte",
+            "bg-red-300": currentFramework === "mobile",
+            "bg-neutral-300": currentFramework === "desktop",
+          },
+        )}
+      />
+      <Image
+        width={1200}
+        height={1200}
+        role="presentation"
+        alt="gradient background"
+        className="fixed inset-0 w-screen h-screen object-cover"
+        src={assets.gradient}
+      />
+      <div
+        className="fixed inset-0 opacity-30"
+        style={{
+          backgroundImage: `url(${assets.square})`,
+          backgroundSize: "30px",
+        }}
+      />
+
+      <div className="max-w-3xl mt-10 w-full">
+        <div className="h-full w-full bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100 p-4 sm:p-8">
+          <Scene/>
         </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
+        <div className="flex mt-3 flex-col items-center relative z-10">
+          <h1
+            className={`text-3xl sm:text-5xl md:text-7xl max-w-3xl text-white text-center leading-snug mb-6 sm:mb-8 md:mb-12 ${poppins.className}`}
+          >
+            {" "}
+            <span
+              className={cn("transition-colors duration-200", {
+                "text-purple-300": currentFramework === "qwik",
+                "text-sky-300": currentFramework === "safari",
+                "text-yellow-300": currentFramework === "chrome",
+                "text-teal-300": currentFramework === "tailwind",
+                "text-blue-300": currentFramework === "react",
+                "text-green-300": currentFramework === "vue",
+                "text-orange-400": currentFramework === "svelte",
+                "text-red-300": currentFramework === "mobile",
+                "text-neutral-300": currentFramework === "desktop",
+              })}
+            >
+              Neurafly
+            </span>{" "}
+          </h1>
+          <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
+            An Autonomous Navigation
           </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
+          <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
+            
           </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+          <div className="mb-4 sm:mb-6 md:mb-8 w-full">
+            <form
+              id="waitlistForm"
+              onSubmit={(e) => {
+                createWaitlist({ email });
+                e.preventDefault();
+              }}
+              className="flex flex-col items-center w-full sm:flex-row sm:justify-center"
+            >
+              <input
+                className={cn(
+                  "text-gray-500 text-lg sm:text-xl md:text-2xl bg-gray-900 flex-1 py-2.5 outline-none border bg-opacity-20 shadow-md placeholder:text-neutral-500 pl-5 rounded-lg mb-4 sm:mb-0 sm:mr-2",
+                  {
+                    "border-purple-300": currentFramework === "qwik",
+                    "border-sky-300": currentFramework === "safari",
+                    "border-yellow-300": currentFramework === "chrome",
+                    "border-teal-300": currentFramework === "tailwind",
+                    "border-blue-300": currentFramework === "react",
+                    "border-green-300": currentFramework === "vue",
+                    "border-orange-400": currentFramework === "svelte",
+                    "border-red-300": currentFramework === "mobile",
+                    "border-neutral-300": currentFramework === "desktop",
+                  },
+                )}
+                value={email}
+                placeholder="Enter your Email"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button
+                    type="submit"
+                    className={cn(
+                      "text-black text-lg sm:text-xl md:text-2xl px-6 py-3 rounded-md font-semibold transition-colors duration-200",
+                      {
+                        "bg-purple-300": currentFramework === "qwik",
+                        "bg-sky-300": currentFramework === "safari",
+                        "bg-yellow-300": currentFramework === "chrome",
+                        "bg-teal-300": currentFramework === "tailwind",
+                        "bg-blue-300": currentFramework === "react",
+                        "bg-green-300": currentFramework === "vue",
+                        "bg-orange-400": currentFramework === "svelte",
+                        "bg-red-300": currentFramework === "mobile",
+                        "bg-neutral-300": currentFramework === "desktop",
+                      },
+                    )}
+                  >
+                    Join waitlist
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="bg-gray-900 text-gray-300 max-w-lg mx-auto p-6 rounded-lg">
+                  <DialogHeader>
+                    <DialogTitle className="text-gray-300 mb-4 text-center font-bold text-2xl">
+                      Thank you for joining the waitlist!
+                    </DialogTitle>
+                    <DialogDescription className="px-4 text-center text-lg">
+                      {"We're"} thrilled to have you on board. Keep an eye on
+                      your inbox for exclusive updates, sneak peeks, and early
+                      access to our groundbreaking platform.
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </form>
+          </div>
+          <div className="items-center justify-center text-center">
+            <p className="text-center text-gray-200 text-xl sm:text-2xl md:text-3xl font-bold mb-4 mt-8">
+              Follow us to stay updated
+            </p>
+            <div className="mb-4 sm:mb-6 md:mb-8 flex items-center text-center justify-center text-gray-400 gap-5">
+              <Link href="https://www.instagram.com/oscowl_/?hl=en">
+                <Instagram className="text-3xl hover:text-pink-600" size={30} />
+              </Link>
+              <Link href="https://in.linkedin.com/company/oscowl">
+                <LinkedinIcon
+                  className="text-3xl hover:text-blue-500"
+                  size={30}
+                />
+              </Link>
+              <Link href="https://twitter.com/oscowl_">
+                <FaXTwitter className="text-3xl hover:text-white" size={30} />
+              </Link>
+            </div>
+          </div>
+          <div className="bottom-0 w-full text-gray-500 text-center text-lg sm:text-xl md:text-2xl mb-4 p-5">
+            © 2024 <Link href="https://www.oscowl.in/">OSCOWL™</Link>. All
+            Rights Reserved.
+          </div>
+        </div>
       </div>
     </main>
   );
