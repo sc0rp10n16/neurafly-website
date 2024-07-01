@@ -127,7 +127,7 @@ export default function Home() {
             An Autonomous Navigation
           </p>
           <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
-            
+          Our project is dedicated to improving drone safety and navigation by leveraging the power of ultrasonic sensors. By integrating these sensors with the F450 drone, we provide an affordable and effective solution for obstacle detection and avoidance, ensuring your drone can navigate complex environments with ease.
           </p>
           <div className="mb-4 sm:mb-6 md:mb-8 w-full">
             <form
