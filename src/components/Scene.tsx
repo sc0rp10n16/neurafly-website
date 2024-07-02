@@ -12,10 +12,10 @@ export default function Scene() {
         
         <ambientLight />
         <pointLight position={[10, 10, 10]} />
-        {/* <OrbitControls
+        <OrbitControls
              minDistance={0} // Minimum zoom distance
              maxDistance={5} // Maximum zoom distance
-        /> */}
+        />
         <GLTFModel 
             
             />

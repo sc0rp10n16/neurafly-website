@@ -68,7 +68,7 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
       <Snowfall
-        snowflakeCount={1000}
+        snowflakeCount={500}
         color="grey"
         style={{
           position: "fixed",
@@ -76,8 +76,7 @@ export default function Home() {
           height: "100vh",
           zIndex: -9,
         }}
-        speed={"140"}
-        radius={"12"}
+        
       />
       <div
         className={cn(
