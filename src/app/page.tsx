@@ -23,6 +23,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { Canvas } from "react-three-fiber";
 import { OrbitControls } from "@react-three/drei";
 import dynamic from "next/dynamic";
+import Snowfall from "react-snowfall";
 
 
 const Scene = dynamic(()=> import("@/components/Scene"), {ssr:false});
@@ -66,6 +67,18 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+      <Snowfall
+        snowflakeCount={1000}
+        color="grey"
+        style={{
+          position: "fixed",
+          width: "100vw",
+          height: "100vh",
+          zIndex: -9,
+        }}
+        speed={"140"}
+        radius={"12"}
+      />
       <div
         className={cn(
           "fixed inset-0 transition-colors delay-100 duration-700 opacity-25",
@@ -99,8 +112,9 @@ export default function Home() {
       />
 
       <div className="max-w-3xl mt-10 w-full">
-        <div className="h-full w-full p-4 sm:p-8">
+        <div className="h-full lg:min-h-screen w-full p-4 sm:p-8">
           <Scene/>
+          
         </div>
         <div className="flex mt-3 flex-col items-center relative z-10">
           <h1
@@ -123,12 +137,12 @@ export default function Home() {
               Neurafly
             </span>{" "}
           </h1>
-          <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
+          {/* <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
             An Autonomous Navigation
-          </p>
-          <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
+          </p> */}
+          {/* <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
           Our project is dedicated to improving drone safety and navigation by leveraging the power of ultrasonic sensors. By integrating these sensors with the F450 drone, we provide an affordable and effective solution for obstacle detection and avoidance, ensuring your drone can navigate complex environments with ease.
-          </p>
+          </p> */}
           <div className="mb-4 sm:mb-6 md:mb-8 w-full">
             <form
               id="waitlistForm"
