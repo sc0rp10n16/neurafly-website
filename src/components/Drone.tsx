@@ -23,7 +23,7 @@ const Model = () => {
     }
   });
 
-  return <primitive ref={modelRef} object={scene} scale={1} position={[0, -2, -5]} />;
+  return <primitive  ref={modelRef} object={scene} scale={1} position={[0, -2, -5]} />;
 };
 
 export default Model;

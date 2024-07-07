@@ -67,7 +67,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
-      <Snowfall
+      {/* <Snowfall
         snowflakeCount={500}
         color="grey"
         style={{
@@ -77,21 +77,11 @@ export default function Home() {
           zIndex: -9,
         }}
         
-      />
+      /> */}
       <div
         className={cn(
-          "fixed inset-0 transition-colors delay-100 duration-700 opacity-25",
-          {
-            "bg-purple-300": currentFramework === "qwik",
-            "bg-sky-300": currentFramework === "safari",
-            "bg-yellow-300": currentFramework === "chrome",
-            "bg-teal-300": currentFramework === "tailwind",
-            "bg-blue-300": currentFramework === "react",
-            "bg-green-300": currentFramework === "vue",
-            "bg-orange-400": currentFramework === "svelte",
-            "bg-red-300": currentFramework === "mobile",
-            "bg-neutral-300": currentFramework === "desktop",
-          },
+          "fixed inset-0 transition-colors delay-100 duration-700 opacity-25 bg-white",
+          
         )}
       />
       <Image
@@ -102,15 +92,9 @@ export default function Home() {
         className="fixed inset-0 w-screen h-screen object-cover"
         src={assets.gradient}
       />
-      <div
-        className="fixed inset-0 opacity-30"
-        style={{
-          backgroundImage: `url(${assets.square})`,
-          backgroundSize: "30px",
-        }}
-      />
+      
 
-      <div className="max-w-3xl mt-10 w-full">
+      <div className="max-w-3xl w-full">
         <div className="h-full lg:min-h-screen w-full p-4 sm:p-8">
           <Scene/>
           
@@ -139,9 +123,9 @@ export default function Home() {
           {/* <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
             An Autonomous Navigation
           </p> */}
-          {/* <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
-          Our project is dedicated to improving drone safety and navigation by leveraging the power of ultrasonic sensors. By integrating these sensors with the F450 drone, we provide an affordable and effective solution for obstacle detection and avoidance, ensuring your drone can navigate complex environments with ease.
-          </p> */}
+          <p className="text-gray-300 mb-4 sm:mb-6 md:mb-8 text-lg sm:text-xl md:text-2xl text-center">
+            Register with your email to join the waitlist for more update!
+          </p>
           <div className="mb-4 sm:mb-6 md:mb-8 w-full">
             <form
               id="waitlistForm"
